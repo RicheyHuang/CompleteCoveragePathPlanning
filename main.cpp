@@ -347,7 +347,7 @@ int main() {
         }
     }
 
-    Position2D start = Position2D(50,50);
+    Position2D start = Position2D(41,88);
 
     completeCoveragePathPlanning(start);
 
