@@ -8,7 +8,7 @@
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/core/core.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
-
+#include <opencv2/imgcodecs/imgcodecs.hpp>
 
 double INF = 10000;
 
@@ -315,6 +315,8 @@ int main() {
 //    }
 
 
+
+
     // build a simple map
 
     for(int i = 0; i < MAP_WIDTH; i++)
@@ -345,9 +347,43 @@ int main() {
         }
     }
 
-    completeCoveragePathPlanning(Position2D(66,66));
+    Position2D start = Position2D(50,50);
+
+    completeCoveragePathPlanning(start);
 
     std::cout << std::endl << std::endl;
+
+
+    cv::Mat cost_map = cv::Mat::zeros(MAP_HEIGHT, MAP_WIDTH, CV_32FC1);
+    for(int i = 0; i < MAP_WIDTH; i++)
+    {
+        for (int j = 0; j < MAP_HEIGHT; j++)
+        {
+            if(i != 0 && i != (MAP_HEIGHT-1) && j != 0 && j != (MAP_WIDTH-1))
+            {
+                cost_map.at<float>(j,i) = prob_map[Position2D(i,j)].cost*1.2;
+            }
+            else
+            {
+                cost_map.at<float>(j,i) = 255.0;
+            }
+        }
+    }
+    for(int i = 40; i < 90; i++)
+    {
+        for (int j = 40; j < 90; j++)
+        {
+            if(i == 40 || i == 89 || j == 89)
+            {
+                cost_map.at<float>(j,i) = 255.0;
+            }
+        }
+    }
+    cost_map.convertTo(cost_map, CV_8UC1);
+    cv::applyColorMap(cost_map, cost_map, cv::COLORMAP_RAINBOW);
+    cv::imshow("occupancy map", cost_map);
+    cv::waitKey(0);
+
 
 //    std::cout << "occupancy value of each position:" << std::endl << std::endl;
 //
@@ -429,18 +465,18 @@ int main() {
 
 
 
-    cv::Mat canvas = cv::Mat::zeros(MAP_HEIGHT, MAP_WIDTH, CV_32FC3);
-    for(int i = 0; i < MAP_HEIGHT; i++)
+    cv::Mat map = cv::Mat::zeros(MAP_HEIGHT, MAP_WIDTH, CV_32FC3);
+    for(int i = 0; i < MAP_WIDTH; i++)
     {
-        for (int j = 0; j < MAP_WIDTH; j++)
+        for (int j = 0; j < MAP_HEIGHT; j++)
         {
             if(i != 0 && i != (MAP_HEIGHT-1) && j != 0 && j != (MAP_WIDTH-1))
             {
-                canvas.at<cv::Vec3f>(j,i) = cv::Vec3f(255.0, 255.0, 255.0);
+                map.at<cv::Vec3f>(j,i) = cv::Vec3f(255.0, 255.0, 255.0);
             }
             else
             {
-                canvas.at<cv::Vec3f>(j,i) = cv::Vec3f(0.0, 0.0, 0.0);
+                map.at<cv::Vec3f>(j,i) = cv::Vec3f(0.0, 0.0, 0.0);
             }
         }
     }
@@ -450,28 +486,37 @@ int main() {
         {
             if(i == 40 || i == 89 || j == 89)
             {
-                canvas.at<cv::Vec3f>(j,i) = cv::Vec3f(0.0, 0.0, 0.0);
+                map.at<cv::Vec3f>(j,i) = cv::Vec3f(0.0, 0.0, 0.0);
             }
             else
             {
-                canvas.at<cv::Vec3f>(j,i) = cv::Vec3f(255.0, 255.0, 255.0);
+                map.at<cv::Vec3f>(j,i) = cv::Vec3f(255.0, 255.0, 255.0);
             }
         }
     }
 
-    canvas.at<cv::Vec3f>(66,66) = cv::Vec3f(0.0, 0.0, 255.0);
 
+    cv::Mat hotmap = cv::Mat::zeros(map.rows, map.cols, CV_32FC1);
 
     std::vector<Position2D>::iterator it = optimal_path.begin();
 
     while(it != optimal_path.end())
     {
-        canvas.at<cv::Vec3f>(it->y, it->x) = cv::Vec3f(0.0, 0.0, 255.0);
-        cv::imshow("map", canvas);
+        map.at<cv::Vec3f>(it->y, it->x) = cv::Vec3f(0.0, 0.0, 255.0);
+
+        hotmap.at<float>(it->y, it->x) += 51.0;
+
+        cv::imshow("trajectory", map);
 
         cv::waitKey(1);
         it++;
     }
+    cv::waitKey(0);
+
+    hotmap.convertTo(hotmap, CV_8UC1);
+
+    cv::applyColorMap(hotmap, hotmap, cv::COLORMAP_HOT);
+    cv::imshow("hotmap", hotmap);
     cv::waitKey(0);
 
     return 0;
