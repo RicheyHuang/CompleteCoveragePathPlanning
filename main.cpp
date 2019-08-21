@@ -288,34 +288,6 @@ void completeCoveragePathPlanning(Position2D start_position)
 
 
 int main() {
-//    cv::Mat map = cv::imread("ccpp.jpg", cv::IMREAD_GRAYSCALE);
-//    cv::Mat binary_map = map.clone();
-//    cv::threshold(map, binary_map, 175, 255, CV_THRESH_BINARY);
-//    cv::imshow("thresh", binary_map);
-//    cv::waitKey();
-
-//    std::cout<<map.size[0] << " "<<map.size[1] << std::endl;
-
-
-//    for(int x = 0; x < map.cols; x++)
-//    {
-//        for (int y = 0; y < map.rows; y++)
-//        {
-//            if(static_cast<double>(map.at<uchar>(y,x)) == 255)
-//            {
-//                prob_map[Position2D(x,y)].occupancy = 1.0;
-//                std::cout << "x:" << x << ", y:" << y << ", occupancy: " << prob_map[Position2D(x,y)].occupancy << std::endl;
-//            } else
-//            {
-//                prob_map[Position2D(x,y)].occupancy = INF;
-//                std::cout << "x:" << x << ", y:" << y << ", occupancy: " << prob_map[Position2D(x,y)].occupancy << std::endl;
-//            }
-//            std::cout << static_cast<double>(map.at<uchar>(y,x)) << std::endl;
-//        }
-//    }
-
-
-
 
     // build a simple map
 
@@ -383,86 +355,6 @@ int main() {
     cv::applyColorMap(cost_map, cost_map, cv::COLORMAP_RAINBOW);
     cv::imshow("occupancy map", cost_map);
     cv::waitKey(0);
-
-
-//    std::cout << "occupancy value of each position:" << std::endl << std::endl;
-//
-//    for(int i = 0; i < MAP_HEIGHT; i++)
-//    {
-//        for (int j = 0; j < MAP_WIDTH; j++)
-//        {
-//            if(prob_map[Position2D(j,i)].cost == INF)
-//            {
-//                std::cout << std::left << std::setw(2) << "*" << "  ";
-//            }
-////            else if(std::find(optimal_path.begin(),optimal_path.end(),Position2D(j,i)) != optimal_path.end())
-////            {
-////                std::cout << std::left << std::setw(2) << "$" << "  ";
-////            }
-//            else
-//            {
-//                std::cout << std::left << std::setw(2) << prob_map[Position2D(j,i)].cost << "  ";
-//            }
-//
-//        }
-//        std::cout << std::endl;
-//    }
-//
-//    std::cout << std::endl;
-
-//    std::cout<< "visited state of each position:" << std::endl << std::endl;
-//
-//    for(int i = 0; i < 13; i++)
-//    {
-//        for (int j = 0; j < 13; j++)
-//        {
-//            if(prob_map[Position2D(j,i)].cost == INF)
-//            {
-//                std::cout << std::left << std::setw(2) << "*" << "  ";
-//            }
-//            else
-//            {
-//                std::cout << std::left << std::setw(2) << prob_map[Position2D(j,i)].isVisited << "  ";
-//            }
-//
-//        }
-//        std::cout << std::endl;
-//    }
-//
-//    std::cout << std::endl;
-
-//    std::cout << "visited number of each position:" << std::endl << std::endl;
-//
-//    for(int i = 0; i < MAP_HEIGHT; i++)
-//    {
-//        for (int j = 0; j < MAP_WIDTH; j++)
-//        {
-//            if(prob_map[Position2D(j,i)].cost == INF)
-//            {
-//                std::cout << std::left << std::setw(2) << "*" << "  ";
-//            }
-//            else
-//            {
-//                std::cout << std::left << std::setw(2) << prob_map[Position2D(j,i)].visitedNum << "  ";
-//            }
-//
-//        }
-//        std::cout << std::endl;
-//    }
-
-
-
-//    for(int i = 0; i < MAP_HEIGHT; i++)
-//    {
-//        for (int j = 0; j < MAP_WIDTH; j++)
-//        {
-//            if(!prob_map[Position2D(j,i)].isVisited)
-//            {
-//                std::cout << "unvisited point found."<< std::endl;
-//            }
-//        }
-//    }
-
 
 
     cv::Mat map = cv::Mat::zeros(MAP_HEIGHT, MAP_WIDTH, CV_32FC3);
