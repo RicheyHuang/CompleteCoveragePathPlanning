@@ -353,7 +353,7 @@ int main() {
     }
     cost_map.convertTo(cost_map, CV_8UC1);
     cv::applyColorMap(cost_map, cost_map, cv::COLORMAP_RAINBOW);
-    cv::imshow("occupancy map", cost_map);
+    cv::imshow("cost map", cost_map);
     cv::waitKey(0);
 
 
