@@ -44,8 +44,8 @@ struct mapPoint
 };
 
 
-bool operator<(const Position2D &lhs, const Position2D &rhs) {
-    return (lhs.x < rhs.x) || ((lhs.x == rhs.x) && (lhs.y < rhs.y));
+bool operator<(const Position2D &p1, const Position2D &p2) {
+    return (p1.x < p2.x) || ((p1.x == p2.x) && (p1.y < p2.y));
 }
 
 bool operator == (const Position2D &p1, const Position2D &p2)
