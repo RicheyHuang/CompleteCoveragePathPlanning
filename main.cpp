@@ -381,6 +381,7 @@ int main() {
     }
     cost_map.convertTo(cost_map, CV_8UC1);
     cv::applyColorMap(cost_map, cost_map, cv::COLORMAP_RAINBOW);
+    cv::namedWindow("cost map", cv::WINDOW_NORMAL);
     cv::imshow("cost map", cost_map);
     cv::waitKey(0);
 
@@ -500,6 +501,8 @@ int main() {
 
     std::vector<Position2D>::iterator it = optimal_path.begin();
 
+    cv::namedWindow("trajectory", cv::WINDOW_NORMAL);
+
     while(it != optimal_path.end())
     {
         map.at<cv::Vec3f>(it->y, it->x) = cv::Vec3f(0.0, 0.0, 255.0);
@@ -516,6 +519,7 @@ int main() {
     hotmap.convertTo(hotmap, CV_8UC1);
 
     cv::applyColorMap(hotmap, hotmap, cv::COLORMAP_HOT);
+    cv::namedWindow("hotmap", cv::WINDOW_NORMAL);
     cv::imshow("hotmap", hotmap);
     cv::waitKey(0);
 
